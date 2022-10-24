@@ -47,16 +47,25 @@ export default {
 <template>
   <div id="homepage">
     <header>
-      <h1 v-if="state.filter === 'all'">Wszystkie przedmioty</h1>
-      <h1 v-else>Kategoria: {{ state.filter }}</h1>
+      <div>
+        <h1 v-if="state.filter === 'all'">Wszystkie przedmioty</h1>
+        <h1 v-else>Kategoria: {{ state.filter }}</h1>
+        <p>Ilość: {{ state.products.length }}</p>
+      </div>
 
-      <Badge @click="state.showModal = true">
-        Filtuj
-        <Icon icon="heroicons:adjustments-horizontal" class="icon" />
-      </Badge>
+      <div class="badgeWrapper">
+        <Badge @click="state.showModal = true">
+          Filtuj
+          <Icon icon="heroicons:adjustments-horizontal" class="icon" />
+        </Badge>
+      </div>
     </header>
 
-    <Table :products="state.products" class="table" />
+    <Table
+      :products="state.products"
+      class="table"
+      @openFiltersModal="state.showModal = true"
+    />
 
     <FiltersModal
       :showModal="state.showModal"
@@ -69,10 +78,21 @@ export default {
 </template>
 
 <style lang="less" scoped>
+#homepage {
+  max-width: 1200px;
+  margin: 0 auto;
+}
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  .badgeWrapper {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+  }
 }
 .icon {
   font-size: 1rem;

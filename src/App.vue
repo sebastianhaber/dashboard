@@ -12,9 +12,3 @@ import Wrapper from "./components/templates/Wrapper.vue";
     </Wrapper>
   </div>
 </template>
-
-<style lang="less">
-#main {
-  display: flex;
-}
-</style>

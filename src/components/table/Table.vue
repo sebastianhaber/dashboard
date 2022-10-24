@@ -1,54 +1,60 @@
 <template>
-  <table class="table">
-    <thead class="thead">
-      <td class="thead__id" title="Sortuj po ID">
-        <button @click="handleSortBy('id')">
-          <p>ID</p>
-          <Icon
-            icon="heroicons:chevron-up"
-            class="icon"
-            v-if="sort.by === 'id'"
-            :class="{ down: sort.ascending }"
-          />
-        </button>
-      </td>
-      <td class="thead__image">Obraz</td>
-      <td class="thead__name">Nazwa</td>
-      <td class="thead__price" title="Sortuj po Cenie">
-        <button @click="handleSortBy('price')">
-          <p>Cena</p>
-          <Icon
-            icon="heroicons:chevron-up"
-            class="icon"
-            v-if="sort.by === 'price'"
-            :class="{ down: sort.ascending }"
-          />
-        </button>
-      </td>
-      <td class="thead__qty" title="Sortuj po Ilości w magazynie">
-        <button @click="handleSortBy('qty')">
-          <p>Ilość</p>
-          <Icon
-            icon="heroicons:chevron-up"
-            class="icon"
-            v-if="sort.by === 'qty'"
-            :class="{ down: sort.ascending }"
-          />
-        </button>
-      </td>
-      <td class="thead__category">Kategoria</td>
-    </thead>
-    <tbody>
-      <tr v-for="item in data" :key="item.id" class="row">
-        <td>{{ item.id }}</td>
-        <td>{{ item.name }}</td>
-        <td>{{ item.name }}</td>
-        <td>{{ item.price }}</td>
-        <td>{{ item.quantity }}</td>
-        <td>{{ item.categories[0] }}</td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="wrapper">
+    <table class="table">
+      <thead class="thead">
+        <td class="thead__id" title="Sortuj po ID">
+          <button @click="handleSortBy('id')">
+            <p>ID</p>
+            <Icon
+              icon="heroicons:chevron-up"
+              class="icon"
+              v-if="sort.by === 'id'"
+              :class="{ down: sort.ascending }"
+            />
+          </button>
+        </td>
+        <td class="thead__image">Obraz</td>
+        <td class="thead__name">Nazwa</td>
+        <td class="thead__price" title="Sortuj po Cenie">
+          <button @click="handleSortBy('price')">
+            <p>Cena</p>
+            <Icon
+              icon="heroicons:chevron-up"
+              class="icon"
+              v-if="sort.by === 'price'"
+              :class="{ down: sort.ascending }"
+            />
+          </button>
+        </td>
+        <td class="thead__qty" title="Sortuj po Ilości w magazynie">
+          <button @click="handleSortBy('qty')">
+            <p>Ilość</p>
+            <Icon
+              icon="heroicons:chevron-up"
+              class="icon"
+              v-if="sort.by === 'qty'"
+              :class="{ down: sort.ascending }"
+            />
+          </button>
+        </td>
+        <td class="thead__category" title="Filtruj wg Kategorii">
+          <button @click="$emit('openFiltersModal')">Kategoria</button>
+        </td>
+      </thead>
+      <tbody>
+        <tr v-for="item in data" :key="item.id" class="row">
+          <td>{{ item.id }}</td>
+          <td>
+            <img :src="item.imageUrl" alt="{{item.name}}" />
+          </td>
+          <td>{{ item.name }}</td>
+          <td>{{ item.price }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>{{ item.categories[0] }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </template>
 
 <script>
@@ -125,10 +131,10 @@ export default {
 
 <style lang="less" scoped>
 .table {
-  cursor: pointer;
   border-collapse: collapse;
   border-radius: 0.5rem;
-  overflow: hidden;
+
+  overflow-x: auto;
   td {
     text-align: center;
   }
@@ -136,6 +142,7 @@ export default {
 .thead {
   background-color: #ececec;
   td {
+    cursor: default;
     transition: background-color 0.2s ease;
     &:hover {
       background-color: #dcdcdc;
@@ -150,6 +157,7 @@ export default {
   &__name,
   &__category {
     min-width: 200px;
+    width: 100%;
   }
   &__price {
     min-width: 170px;
@@ -169,13 +177,20 @@ export default {
     align-items: center;
     justify-content: center;
     gap: 2px;
+
+    cursor: pointer;
   }
 }
 .row {
   user-select: none;
   transition: background-color 0.2s;
   td {
-    padding: 1rem 0;
+    padding: 1rem;
+  }
+  img {
+    width: 50px;
+    height: 50px;
+    border-radius: 0.5rem;
   }
   &:hover {
     background-color: #ececec;
