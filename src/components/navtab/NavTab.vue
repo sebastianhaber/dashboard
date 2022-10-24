@@ -36,6 +36,9 @@ nav {
   height: 70px;
 
   padding: 0 2rem;
+  @media (max-width: 768px) {
+    padding: 0 1rem;
+  }
 }
 .routes {
   display: flex;
@@ -45,7 +48,7 @@ nav {
     align-items: center;
     gap: 1rem;
 
-    padding: 1rem;
+    padding: 0.5rem;
     border-radius: 1rem;
 
     transition: background-color 0.2s;
@@ -54,9 +57,6 @@ nav {
     }
   }
   @media (max-width: 768px) {
-    a {
-      padding: 0.5rem;
-    }
     p {
       display: none;
     }
