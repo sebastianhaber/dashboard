@@ -1,18 +1,14 @@
 <template>
   <nav>
-    <h2 class="logo">Dashboard</h2>
+    <h2 class="logo"><RouterLink to="/">Dashboard</RouterLink></h2>
     <div class="routes">
-      <RouterLink to="/"
-        ><Icon icon="heroicons:home" class="icon" />Strona główna</RouterLink
-      >
-      <RouterLink to="/szukaj"
-        ><Icon
-          icon="heroicons:magnifying-glass"
-          class="icon"
-        />Szukaj</RouterLink
-      >
-      <RouterLink to="/dodaj"
-        ><Icon icon="heroicons:plus" class="icon" />Dodaj produkt</RouterLink
+      <RouterLink to="/szukaj" title="Wyszukiwarka"
+        ><Icon icon="heroicons:magnifying-glass" class="icon" />
+        <p>Szukaj</p>
+      </RouterLink>
+      <RouterLink to="/dodaj" title="Dodaj produkt"
+        ><Icon icon="heroicons:plus" class="icon" />
+        <p>Dodaj produkt</p></RouterLink
       >
     </div>
   </nav>
@@ -33,20 +29,18 @@ export default {
 <style lang="less" scoped>
 nav {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
 
-  max-width: 300px;
   width: 100%;
-  height: 100vh;
+  height: 70px;
 
-  padding: 2rem;
+  padding: 0 2rem;
 }
 .routes {
-  margin-top: 2rem;
+  display: flex;
+  gap: 1rem;
   a {
-    color: inherit;
-    text-decoration: none;
-
     display: flex;
     align-items: center;
     gap: 1rem;
@@ -59,11 +53,20 @@ nav {
       background-color: #dedede;
     }
   }
+  @media (max-width: 768px) {
+    a {
+      padding: 0.5rem;
+    }
+    p {
+      display: none;
+    }
+  }
 }
 h2.logo {
-  padding: 0 1rem;
-  font-weight: 700;
   font-size: 1.5rem;
+  a {
+    font-weight: 700;
+  }
 }
 .icon {
   font-size: 1.5rem;
