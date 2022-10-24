@@ -36,7 +36,9 @@
           />
         </button>
       </td>
-      <td class="thead__category">Kategoria</td>
+      <td class="thead__category">
+        <button @click="$emit('openFiltersModal')">Kategoria</button>
+      </td>
     </thead>
     <tbody>
       <tr v-for="item in data" :key="item.id" class="row">

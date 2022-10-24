@@ -56,7 +56,11 @@ export default {
       </Badge>
     </header>
 
-    <Table :products="state.products" class="table" />
+    <Table
+      :products="state.products"
+      class="table"
+      @openFiltersModal="state.showModal = true"
+    />
 
     <FiltersModal
       :showModal="state.showModal"
