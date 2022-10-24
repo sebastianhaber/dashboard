@@ -53,7 +53,7 @@
 
 <script>
 import { Icon } from "@iconify/vue";
-import { ref, toRefs } from "vue";
+import { ref, toRefs, watch } from "vue";
 export default {
   name: "Table",
   props: ["products"],
@@ -64,6 +64,10 @@ export default {
     const { products } = toRefs(props);
     const data = ref(products.value);
 
+    watch(products, () => {
+      data.value = products.value;
+    });
+
     // current sorting status
     const sort = ref({
       by: "id",
@@ -72,7 +76,6 @@ export default {
 
     // sort items
     const handleSortBy = (value) => {
-      console.log(value);
       let sortedArray = [];
       if (sort.value.by === value) {
         sort.value.ascending = !sort.value.ascending;
