@@ -12,7 +12,8 @@ const props = defineProps({
     <div v-if="show" class="modal-mask">
       <div class="modal-wrapper">
         <div class="modal-container">
-          <div class="exit">
+          <div class="modal-header">
+            <slot name="header">default header</slot>
             <Button
               class="ghost exit__btn"
               @click="$emit('close')"
@@ -20,9 +21,6 @@ const props = defineProps({
             >
               <Icon icon="heroicons:x-mark" />
             </Button>
-          </div>
-          <div class="modal-header">
-            <slot name="header">default header</slot>
           </div>
 
           <div class="modal-body">
@@ -74,12 +72,16 @@ const props = defineProps({
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
   transition: all 0.2s ease;
 }
-
-.modal-header h3 {
-  margin-top: 0;
-  font-weight: bold;
-  color: #06f;
-  cursor: default;
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  h3 {
+    margin-top: 0;
+    font-weight: bold;
+    color: #06f;
+    cursor: default;
+  }
 }
 
 .modal-body {
@@ -105,8 +107,6 @@ const props = defineProps({
 }
 
 .exit {
-  display: flex;
-  justify-content: flex-end;
   &__btn {
     border-radius: 0.5rem;
     padding: 0.5rem;
