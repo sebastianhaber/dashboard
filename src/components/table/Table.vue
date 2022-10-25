@@ -45,7 +45,7 @@
         <tr v-for="item in data" :key="item.id" class="row">
           <td>{{ item.id }}</td>
           <td>
-            <img :src="item.imageUrl" alt="{{item.name}}" />
+            <img :src="item.imageUrl" :alt="item.name" />
           </td>
           <td>{{ item.name }}</td>
           <td>{{ item.price }}</td>
