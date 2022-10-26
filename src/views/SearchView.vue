@@ -5,9 +5,11 @@
   <div v-if="matchedCategories.length > 0" class="items-wrapper">
     <h3>Kategorie</h3>
     <ul class="categories">
-      <li v-for="category in matchedCategories" :key="category.id">
+      <li v-for="category in matchedCategories" :key="category">
         <Badge>
-          {{ category.name }}
+          <RouterLink :to="{ name: 'home', query: { category } }">
+            {{ category }}
+          </RouterLink>
         </Badge>
       </li>
     </ul>
@@ -35,7 +37,7 @@ import { ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import Badge from "../components/utils/Badge.vue";
 import { findInCategories } from "../functions";
-import { CATEGORIES } from "../mocked/Data";
+import router from "../router";
 import { useProducts } from "../stores/products";
 
 export default {
@@ -55,19 +57,35 @@ export default {
       query.value = route.params.query;
     });
 
+    const showCategory = (category) => {
+      router.push({
+        path: "/",
+        params: {
+          category,
+        },
+      });
+    };
+
     return {
       query,
       matchedCategories,
       matchedProducts,
       productsStore,
+      showCategory,
     };
   },
   mounted() {
-    this.matchedCategories = findInCategories(this.query);
+    this.matchedCategories = findInCategories(
+      this.query,
+      this.productsStore.categories
+    );
     this.matchedProducts = this.productsStore.findProducts(this.query);
   },
   beforeUpdate() {
-    this.matchedCategories = findInCategories(this.query);
+    this.matchedCategories = findInCategories(
+      this.query,
+      this.productsStore.categories
+    );
     this.matchedProducts = this.productsStore.findProducts(this.query);
   },
 };

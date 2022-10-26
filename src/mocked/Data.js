@@ -1,40 +1,9 @@
-// export const CATEGORIES = [
-//   {
-//     name: "Na drzewo",
-//     id: 1
-//   },
-//   "Na ziemię",
-//   "Małe ptaki",
-//   "Duże ptaki",
-//   "Małe ssaki",
-//   "Średnie ssaki",
-//   "Duże ssaki",
-// ];
 export const CATEGORIES = [
-  {
-    id: 1,
-    name: "Na drzewo",
-  },
-  {
-    id: 2,
-    name: "Na ziemię",
-  },
-  {
-    id: 3,
-    name: "Małe ptaki",
-  },
-  {
-    id: 4,
-    name: "Małe ssaki",
-  },
-  {
-    id: 5,
-    name: "Średnie ssaki",
-  },
-  {
-    id: 6,
-    name: "Duże ssaki",
-  },
+  "Na drzewo",
+  "Na ziemię",
+  "Małe ptaki",
+  "Małe ssaki",
+  "Duże ssaki",
 ];
 
 const newItem = (
