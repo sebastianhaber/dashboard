@@ -1,14 +1,18 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
-import { mocked_data } from "../mocked/Data";
+import { CATEGORIES, mocked_data } from "../mocked/Data";
 
 export const useProducts = defineStore("products", () => {
   const products = ref(mocked_data.products);
-  // all or strict category
-  const filter = ref("all");
+  const categories = ref(CATEGORIES);
 
+  // products
   const setProducts = (newProducts) => {
     products.value = newProducts;
+    return true;
+  };
+  const resetProducts = () => {
+    products.value = mocked_data.products;
     return true;
   };
   const addProduct = ({
@@ -19,7 +23,7 @@ export const useProducts = defineStore("products", () => {
     categories = [],
   }) => {
     const newProduct = {
-      id: products.value.length,
+      id: products.value.length + 1,
       name,
       imageUrl,
       price,
@@ -55,24 +59,53 @@ export const useProducts = defineStore("products", () => {
     return array;
   };
 
-  const changeFilter = (category) => {
-    category = category.toLowerCase();
-    if (!category.length) {
-      filter.value = "all";
-      return true;
-    }
-    filter.value = category;
+  // categories
+  const addCategoryToProduct = (category = "", product) => {
+    const categoryUpperCase =
+      category[0].toUpperCase() + category.slice(1, category.length);
+    const updatedProduct = {
+      ...product,
+      categories: [...product.categories, categoryUpperCase],
+    };
+    const productId = product.id;
+
+    // add category to Categories List
+    if (!categories.includes(category))
+      categories.value = [...categories.value, category];
+
+    // assign updated product
+    products.value.find((element) => {
+      if (element.id === productId) {
+        element = updatedProduct;
+      }
+    });
+    return true;
+  };
+  const removeCategoryFromProduct = (category = "", product) => {
+    const categories = product.categories;
+    const categoriesWithoutElement = categories.filter(
+      (element) => element !== category
+    );
+
+    const newProduct = { ...product, categories: categoriesWithoutElement };
+    const productId = product.id;
+
+    products.value.find((element) => {
+      if (element.id === productId) element = newProduct;
+    });
     return true;
   };
 
   return {
     products,
-    filter,
+    categories,
     setProducts,
     addProduct,
     deleteProduct,
-    changeFilter,
     editProduct,
     findProducts,
+    resetProducts,
+    addCategoryToProduct,
+    removeCategoryFromProduct,
   };
 });

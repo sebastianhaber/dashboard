@@ -1,41 +1,58 @@
 <script>
 import { reactive } from "vue";
-import { CATEGORIES, mocked_data } from "../mocked/Data";
+import { useRoute } from "vue-router";
 import Table from "../components/table/Table.vue";
 import Modal from "../components/templates/Modal.vue";
-import Badge from "../components/utils/Badge.vue";
-import FiltersModal from "../components/molecules/FiltersModal.vue";
-import { Icon } from "@iconify/vue";
+import { useProducts } from "../stores/products";
 
 export default {
   components: {
     Table,
     Modal,
-    Badge,
-    FiltersModal,
-    Icon,
   },
   setup() {
-    const data = mocked_data.products;
+    const route = useRoute();
+    const categoryFromParams = route.query.category;
+    console.log(categoryFromParams);
+
+    const productsStore = useProducts();
     const state = reactive({
-      filter: "all",
-      categories: CATEGORIES,
-      products: data,
+      categories: productsStore.categories,
+      currentCategory: categoryFromParams
+        ? categoryFromParams
+        : productsStore.currentCategory,
+      products: productsStore.products,
       showModal: false,
     });
 
-    const handleChangeFilters = (category) => {
-      state.filter = category;
-      if (category === "all" || !category) {
-        state.products = data;
-      } else {
-        state.products = data.filter((item) =>
-          item.categories.includes(category)
-        );
+    const changeCurrentCategory = (category = "") => {
+      if (!category.length) {
+        state.currentCategory = "all";
+        return true;
       }
+      state.currentCategory = category;
+      return true;
+    };
+    const handleChangeCategory = (category) => {
+      const allProducts = productsStore.products;
+      if (category === "all" || !category) {
+        changeCurrentCategory("all");
+        state.products = allProducts;
+        return true;
+      }
+
+      const filteredProducts = allProducts.filter((product) =>
+        product.categories.includes(category)
+      );
+      changeCurrentCategory(category);
+      state.products = filteredProducts;
     };
 
-    return { handleChangeFilters, state };
+    return { handleChangeCategory, state, categoryFromParams };
+  },
+  beforeMount() {
+    if (this.categoryFromParams)
+      this.handleChangeCategory(this.categoryFromParams);
   },
 };
 </script>
@@ -44,31 +61,38 @@ export default {
   <div id="homepage">
     <header>
       <div>
-        <h1 v-if="state.filter === 'all'">Wszystkie przedmioty</h1>
-        <h1 v-else>Kategoria: {{ state.filter }}</h1>
+        <h1 v-if="state.currentCategory === 'all' || !state.currentCategory">
+          Wszystkie przedmioty
+        </h1>
+        <h1 v-else>Kategoria: {{ state.currentCategory }}</h1>
         <p>Ilość: {{ state.products.length }}</p>
       </div>
-
-      <div class="badgeWrapper">
-        <Badge @click="state.showModal = true">
-          Filtuj
-          <Icon icon="heroicons:adjustments-horizontal" class="icon" />
-        </Badge>
-      </div>
     </header>
+    <ul class="categories-list">
+      <li>
+        <button
+          @click="handleChangeCategory('all')"
+          :class="{
+            active: !state.currentCategory || state.currentCategory === 'all',
+          }"
+        >
+          Wszystko
+        </button>
+      </li>
+      <li v-for="(category, index) in state.categories" :key="index">
+        <button
+          @click="handleChangeCategory(category)"
+          :class="{ active: state.currentCategory === category }"
+        >
+          {{ category }}
+        </button>
+      </li>
+    </ul>
 
     <Table
       :products="state.products"
       class="table"
       @openFiltersModal="state.showModal = true"
-    />
-
-    <FiltersModal
-      :showModal="state.showModal"
-      @close="state.showModal = false"
-      :categories="state.categories"
-      :changeFilters="handleChangeFilters"
-      :activeCategory="state.filter"
     />
   </div>
 </template>
@@ -84,16 +108,39 @@ header {
   align-items: center;
   gap: 1rem;
   flex-wrap: wrap;
-  .badgeWrapper {
-    flex: 1;
-    display: flex;
-    justify-content: flex-end;
+}
+.categories-list {
+  padding: 2rem 0;
+  display: flex;
+  gap: 0.5rem;
+
+  list-style: none;
+  font-size: 0.75rem;
+
+  overflow-x: auto;
+
+  button {
+    white-space: nowrap;
+    padding: 4px 0.5rem;
+    border-radius: 1rem;
+    background-color: #0066ff20;
+    color: #06f;
+
+    border: 0;
+    cursor: pointer;
+
+    transition: background-color 0.2s ease, color 0.2s ease;
+
+    &:hover {
+      background-color: #0066ff40;
+    }
+    &.active {
+      background-color: #06f;
+      color: white;
+      &:hover {
+        background-color: #05d;
+      }
+    }
   }
-}
-.icon {
-  font-size: 1rem;
-}
-.table {
-  margin-top: 2rem;
 }
 </style>
