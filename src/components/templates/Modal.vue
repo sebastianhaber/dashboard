@@ -1,4 +1,7 @@
 <script setup>
+import { Icon } from "@iconify/vue";
+import Button from "../utils/Button.vue";
+
 const props = defineProps({
   show: Boolean,
 });
@@ -11,6 +14,13 @@ const props = defineProps({
         <div class="modal-container">
           <div class="modal-header">
             <slot name="header">default header</slot>
+            <Button
+              class="ghost exit__btn"
+              @click="$emit('close')"
+              title="Wyjdź"
+            >
+              <Icon icon="heroicons:x-mark" />
+            </Button>
           </div>
 
           <div class="modal-body">
@@ -31,7 +41,7 @@ const props = defineProps({
   </Transition>
 </template>
 
-<style>
+<style scoped lang="less">
 .modal-mask {
   position: fixed;
   z-index: 10;
@@ -50,6 +60,7 @@ const props = defineProps({
 }
 
 .modal-container {
+  position: relative;
   max-width: 600px;
   width: 100%;
 
@@ -61,12 +72,16 @@ const props = defineProps({
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
   transition: all 0.2s ease;
 }
-
-.modal-header h3 {
-  margin-top: 0;
-  font-weight: bold;
-  color: #06f;
-  cursor: default;
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  h3 {
+    margin-top: 0;
+    font-weight: bold;
+    color: #06f;
+    cursor: default;
+  }
 }
 
 .modal-body {
@@ -89,5 +104,15 @@ const props = defineProps({
 .modal-leave-to .modal-container {
   -webkit-transform: scale(0.9);
   transform: scale(0.9);
+}
+
+.exit {
+  &__btn {
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 10;
+  }
 }
 </style>

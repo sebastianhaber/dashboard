@@ -1,13 +1,41 @@
-export const CATEGORIES = {
-  main: {
-    tree: "Na drzewo",
-    ground: "Na ziemię",
+// export const CATEGORIES = [
+//   {
+//     name: "Na drzewo",
+//     id: 1
+//   },
+//   "Na ziemię",
+//   "Małe ptaki",
+//   "Duże ptaki",
+//   "Małe ssaki",
+//   "Średnie ssaki",
+//   "Duże ssaki",
+// ];
+export const CATEGORIES = [
+  {
+    id: 1,
+    name: "Na drzewo",
   },
-  animals: {
-    birds: "Ptaki",
-    mammals: "Ssaki",
+  {
+    id: 2,
+    name: "Na ziemię",
   },
-};
+  {
+    id: 3,
+    name: "Małe ptaki",
+  },
+  {
+    id: 4,
+    name: "Małe ssaki",
+  },
+  {
+    id: 5,
+    name: "Średnie ssaki",
+  },
+  {
+    id: 6,
+    name: "Duże ssaki",
+  },
+];
 
 const newItem = (
   id = 0,
@@ -30,24 +58,24 @@ const newItem = (
 export const mocked_data = {
   products: [
     newItem(1, "Domek#1", "https://picsum.photos/200", 320, 123, [
-      CATEGORIES.main.tree,
-      CATEGORIES.animals.birds,
+      "Na drzewo",
+      "Małe ptaki",
     ]),
     newItem(2, "Domek#2", "https://picsum.photos/250", 150, 21, [
-      CATEGORIES.main.tree,
-      CATEGORIES.animals.birds,
+      "Na drzewo",
+      "Małe ptaki",
     ]),
     newItem(3, "Domek#3", "https://picsum.photos/150", 430, 16, [
-      CATEGORIES.main.ground,
-      CATEGORIES.animals.birds,
+      "Na ziemię",
+      "Małe ssaki",
     ]),
     newItem(4, "Domek#4", "https://picsum.photos/120", 21, 3, [
-      CATEGORIES.main.ground,
-      CATEGORIES.animals.birds,
+      "Na ziemię",
+      "Duże ssaki",
     ]),
     newItem(5, "Domek#5", "https://picsum.photos/210", 100, 999, [
-      CATEGORIES.main.tree,
-      CATEGORIES.animals.mammals,
+      "Na drzewo",
+      "Małe ssaki",
     ]),
   ],
 };
