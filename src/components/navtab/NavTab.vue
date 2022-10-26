@@ -2,26 +2,35 @@
   <nav>
     <h2 class="logo"><RouterLink to="/">Dashboard</RouterLink></h2>
     <div class="routes">
-      <RouterLink to="/szukaj" title="Wyszukiwarka"
-        ><Icon icon="heroicons:magnifying-glass" class="icon" />
+      <button title="Wyszukiwarka" @click="searchModalOpen = true">
+        <Icon icon="heroicons:magnifying-glass" class="icon" />
         <p>Szukaj</p>
-      </RouterLink>
+      </button>
       <RouterLink to="/dodaj" title="Dodaj produkt"
         ><Icon icon="heroicons:plus" class="icon" />
         <p>Dodaj produkt</p></RouterLink
       >
     </div>
   </nav>
+  <SearchModal :showModal="searchModalOpen" @close="searchModalOpen = false" />
 </template>
 
 <script>
 import { RouterLink } from "vue-router";
 import { Icon } from "@iconify/vue";
+import { ref } from "vue";
+import SearchModal from "../molecules/SearchModal.vue";
 
 export default {
   components: {
     RouterLink,
     Icon,
+    SearchModal,
+  },
+  setup() {
+    const searchModalOpen = ref(false);
+
+    return { searchModalOpen };
   },
 };
 </script>
@@ -43,13 +52,19 @@ nav {
 .routes {
   display: flex;
   gap: 1rem;
-  a {
+  a,
+  button {
     display: flex;
     align-items: center;
     gap: 1rem;
 
-    padding: 0.5rem;
+    border: 0;
+    background-color: transparent;
+
+    padding: 0.5rem 1rem;
     border-radius: 1rem;
+
+    cursor: pointer;
 
     transition: background-color 0.2s;
     &:hover {
@@ -57,6 +72,7 @@ nav {
     }
   }
   @media (max-width: 768px) {
+    padding: 0.5rem;
     p {
       display: none;
     }

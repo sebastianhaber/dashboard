@@ -1,5 +1,5 @@
 <script>
-import { reactive, watch } from "vue";
+import { reactive } from "vue";
 import { CATEGORIES, mocked_data } from "../mocked/Data";
 import Table from "../components/table/Table.vue";
 import Modal from "../components/templates/Modal.vue";
@@ -19,18 +19,14 @@ export default {
     const data = mocked_data.products;
     const state = reactive({
       filter: "all",
-      categories: [],
+      categories: CATEGORIES,
       products: data,
       showModal: false,
     });
 
-    Object.keys(CATEGORIES.main).forEach((category) =>
-      state.categories.push(CATEGORIES.main[category])
-    );
-
     const handleChangeFilters = (category) => {
       state.filter = category;
-      if (category === "all") {
+      if (category === "all" || !category) {
         state.products = data;
       } else {
         state.products = data.filter((item) =>
